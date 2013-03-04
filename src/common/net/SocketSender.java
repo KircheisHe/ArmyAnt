@@ -11,7 +11,7 @@ import java.nio.channels.SocketChannel;
 public class SocketSender implements Runnable {
 	private int port = 9050;
 	private SocketChannel socketChannel = null;
-	private StringWritable stringWritable = null;
+	private Writable stringWritable = null;
 	private ByteBuffer buffer = null;
 	private Boolean isClose;
 	
@@ -39,10 +39,17 @@ public class SocketSender implements Runnable {
 		return this.port;
 	}
 	
-	public StringWritable getWritable() {
+	/*
+	 * get the Writable interface
+	 * of the sender.
+	 */
+	public Writable getWritable() {
 		return this.stringWritable;
 	}
 	
+	/*
+	 * used to indicate the close of the sender.
+	 */
 	public void close() {
 		this.isClose = true;
 	}
@@ -74,11 +81,14 @@ public class SocketSender implements Runnable {
 		}
 	}
 	
+	/*
+	 * main test logic.
+	 */
 	public static void main( String[] agrs ) throws InterruptedException {
 		SocketSender ss = new SocketSender();
 		Thread t = new Thread(ss);
 		t.start();
-		StringWritable sw = ss.getWritable();
+		Writable sw = ss.getWritable();
 		sw.write(ByteBuffer.wrap("First String".getBytes()));
 		try {
 			Thread.sleep(1000);

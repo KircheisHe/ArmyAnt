@@ -31,7 +31,7 @@ public class SocketListener implements Runnable{
 	private ServerSocket ss = null;
 	private ByteBuffer buffer = null;
 	private Selector selector = null;
-	private StringWritable stringwritable = null;
+	private Writable stringwritable = null;
 	private Boolean isClose;
 	
 	SocketListener() {
@@ -68,15 +68,23 @@ public class SocketListener implements Runnable{
 		return this.port;
 	}
 	
-	public StringWritable getWritalbe() {
+	/*
+	 * used to get the writable interface.
+	 */
+	public Writable getWritalbe() {
 		return this.stringwritable;
 	}
 	
+	/*
+	 * used to indicate to close the listener.
+	 */
 	public void close() {
 		this.isClose = true;
 	}
 	
-	//	main logic to read the material from the socket.
+	/*	main logic to read the material from the socket.
+	 *  Loop until isClose is set true.
+	 */
 	@Override
 	public void run() {
 		while ( true && !isClose) {	
@@ -134,11 +142,13 @@ public class SocketListener implements Runnable{
 		
 	}
 	
+	//	Main function is used to test the Socket Listener
+	//	Along with Writable
 	public static void main( String[] args ) {
 		SocketListener sl = new SocketListener();
 		Thread t = new Thread(sl);
 		t.start();
-		StringWritable sw = sl.getWritalbe();
+		Writable sw = sl.getWritalbe();
 		while ( true ) {
 			try {
 				Thread.sleep(1000);
