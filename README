@@ -1,0 +1,4 @@
+This Project is created and updated by KircheisHe
+
+The project is used to get information from Data Stream, to transform, to compress and to detect errors in the Data Stream, and finally send information to Scribe and finally to HDFS/HBase.
+
