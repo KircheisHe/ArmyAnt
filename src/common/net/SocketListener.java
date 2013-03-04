@@ -29,10 +29,10 @@ public class SocketListener implements Runnable{
 	int port = 9050;	//	the port to listen, the default port is 9050
 	private ServerSocketChannel ssc = null;
 	private ServerSocket ss = null;
-	private InputStream inputStream = null;
 	private ByteBuffer buffer = null;
-	private OutputStream outputStream = null;
 	private Selector selector = null;
+	private StringWritable stringwritable = null;
+	private Boolean isClose;
 	
 	SocketListener() {
 		this(9050);
@@ -40,7 +40,9 @@ public class SocketListener implements Runnable{
 	
 	SocketListener( int port ) {
 		this.port = port;
-		this.buffer = ByteBuffer.allocate(20);
+		this.isClose = false;
+		this.buffer = ByteBuffer.allocate(50);
+		this.stringwritable = new StringWritable();
 		try {
 			this.selector = Selector.open();
 			this.ssc = ServerSocketChannel.open();
@@ -66,16 +68,22 @@ public class SocketListener implements Runnable{
 		return this.port;
 	}
 	
-	//	need to check if the inputstream is null or not
-	public InputStream getInputStream() {
-		return this.inputStream;
+	public StringWritable getWritalbe() {
+		return this.stringwritable;
 	}
 	
+	public void close() {
+		this.isClose = true;
+	}
+	
+	//	main logic to read the material from the socket.
 	@Override
 	public void run() {
-		while (true ) {	
+		while ( true && !isClose) {	
+			//	Sleep some time before actually doing something.
+			//	in a loop.
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(50);
 				selector.select();
 			}
 			catch (InterruptedException e) {	
@@ -85,6 +93,7 @@ public class SocketListener implements Runnable{
 				e.printStackTrace();
 			} 
 			
+			//	NIO's way to listen and receive information.
 			Set<SelectionKey> selectionKeys = selector.selectedKeys();
 			Iterator<SelectionKey> iter = selectionKeys.iterator();
 			SocketChannel sc;
@@ -104,43 +113,42 @@ public class SocketListener implements Runnable{
 				else if ( (key.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ )  {
 					sc = (SocketChannel) key.channel();
 					int len = 1;
-					while ( len != 0 ) {
-						//	Use a buffer to write into the basic class of DataStream
-						len = 0;
-						int flag = 1;
-						while ( flag == 1 ) {
-							synchronized( buffer ) {
-								if ( buffer.hasRemaining() ) {
-									flag = 1;
-								}
-								else {
-									flag = 0;
-								}
-								if ( flag == 0 ) {
-									try {
-										len = sc.read(buffer);
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-							}
-							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+					try {
+						{
+							len = sc.read( buffer );
+							if ( len > 0 ) {
+								// System.out.println("buffer is " + new String(buffer.array()));
+							
+								buffer.flip();
+								//	Loop in the method to wait for more space.
+								stringwritable.write( buffer );
+								buffer.clear();
 							}
 						}
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
 			}
 		}
+		
 	}
 	
 	public static void main( String[] args ) {
 		SocketListener sl = new SocketListener();
 		Thread t = new Thread(sl);
 		t.start();
-		InputStream dis = sl.getInputStream();
-		
+		StringWritable sw = sl.getWritalbe();
+		while ( true ) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			String s = sw.read();
+			if ( s != null  ) {
+				System.out.println(s);
+			}
+		}
 	}
 }
