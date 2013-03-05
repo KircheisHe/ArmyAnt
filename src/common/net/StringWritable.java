@@ -95,8 +95,6 @@ public class StringWritable implements Writable {
 		bb.put("No".getBytes());
 		bb.flip();
 		cb =  decoder.decode(bb);
-		System.out.println(cb.toString());
-		
+		System.out.println(cb.toString());	
 	}
-
 }
