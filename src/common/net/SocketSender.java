@@ -8,6 +8,9 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import common.writable.StringWritable;
+import common.writable.Writable;
+
 /*
  * SocketSender is used to send String
  * using Socket and Writable interface.
@@ -19,11 +22,11 @@ public class SocketSender implements Runnable {
 	private ByteBuffer buffer = null;
 	private Boolean isClose;
 	
-	SocketSender() {
+	public SocketSender() {
 		this(9050);
 	}
 	
-	SocketSender( int port ) {
+	public SocketSender( int port ) {
 		this.port = port;
 		this.isClose = false;
 		try {

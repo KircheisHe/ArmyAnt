@@ -1,4 +1,4 @@
-package common.net;
+package common.writable;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -6,6 +6,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.LinkedList;
+
 
 /*
  * 	Sychronized Class to store String object.
@@ -29,11 +30,11 @@ public class StringWritable implements Writable {
 	private Charset charSet;
 	private CharsetDecoder decoder;
 	
-	StringWritable() {
+	public StringWritable() {
 		this(100);
 	}
 	
-	StringWritable( int cap ) {
+	public StringWritable( int cap ) {
 		this.capacity = cap;
 		this.listString = new LinkedList<String>(); 
 		this.charSet =  Charset.forName( "UTF-8" );

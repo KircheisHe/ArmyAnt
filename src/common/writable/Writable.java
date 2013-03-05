@@ -1,4 +1,4 @@
-package common.net;
+package common.writable;
 
 import java.nio.ByteBuffer;
 

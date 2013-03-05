@@ -1,0 +1,6 @@
+LineDistributor
+LineProcessor
+are two interfaces that can be used to execute and distribute data
+in the data flow.
+
+More shall come.

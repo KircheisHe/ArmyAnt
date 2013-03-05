@@ -17,6 +17,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+import common.writable.StringWritable;
+import common.writable.Writable;
+
 /*
  * SocketListener is a base class.
  * It is used to listen to a certain port, (usually one module has to listen several ports) 
@@ -34,11 +37,11 @@ public class SocketListener implements Runnable{
 	private Writable stringwritable = null;
 	private Boolean isClose;
 	
-	SocketListener() {
+	public SocketListener() {
 		this(9050);
 	}
 	
-	SocketListener( int port ) {
+	public SocketListener( int port ) {
 		this.port = port;
 		this.isClose = false;
 		this.buffer = ByteBuffer.allocate(50);
