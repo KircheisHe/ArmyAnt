@@ -35,7 +35,7 @@ public class Main {
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
-		Map<Integer, String> b = (Map<Integer, String>) obj;
+		Integer b = (Integer) obj;
 		if ( b == null ) System.out.println("NULL");
 		else {
 			System.out.println(b);

@@ -1,0 +1,58 @@
+<XML>
+<Input>
+	"/Playground/input"
+	<Dispatcher>
+		some dispather class
+		<KV>
+			<Key>*</Key>
+			<Value>A</Value>
+		</KV>
+	</Dispatcher>
+</Input>
+
+<Node>
+	<Name>A</Name>
+	<Executor>
+		some jar name
+	</Executor>
+	<Dispatcher>
+		class A
+		<KV>
+			<Key>1</Key>
+			<Value>B</Value>
+		</KV>
+			<Key>2</Key>
+			<Value>C</Value>
+		<KV>
+	</Dispatcher>	
+</Node>
+
+<Node>
+	<Name>B</Name>
+	<Executor>
+		some jar name
+	</Executor>
+	<Dispatcher>
+		Class B
+		<KV>
+			<Key>1</Key>
+			<Value>C</Value>
+		</KV>
+	</Dispatcher>	
+</Node>
+
+<Node>
+	<Name>C</Name>
+	<Executor>
+		some jar name
+	</Executor>
+	<Dispatcher>
+		Class C
+		<KV>
+			<Key>default</Key>
+			<Value>"/Playground/now"</Value>
+		</KV>
+	</Dispatcher>	
+</Node>
+
+</XML>

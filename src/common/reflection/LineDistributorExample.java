@@ -8,10 +8,8 @@ import java.util.Map;
  */
 public class LineDistributorExample implements LineDistributor {
 	@Override
-	public Map<Integer, String> distribute(String s) {
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
-		map.put(1, s);
-		return map;
+	public Integer distribute(String s) {
+		return 1;
 	}
 
 }

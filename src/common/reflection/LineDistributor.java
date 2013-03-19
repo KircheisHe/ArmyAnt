@@ -10,5 +10,5 @@ public interface LineDistributor {
 	/*
 	 * 
 	 */
-	public Map<Integer, String > distribute( String sin );
+	public Integer distribute( String sin );
 }
