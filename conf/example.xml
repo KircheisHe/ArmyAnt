@@ -1,13 +1,9 @@
 <XML>
 <Input>
-	"/Playground/input"
-	<Dispatcher>
-		some dispather class
-		<KV>
-			<Key>*</Key>
-			<Value>A</Value>
-		</KV>
-	</Dispatcher>
+	"home/kircheis/Playground/input"
+	<Next>
+		A
+	</Next>
 </Input>
 
 <Node>
@@ -20,7 +16,6 @@
 		<KV>
 			<Key>1</Key>
 			<Value>B</Value>
-		</KV>
 			<Key>2</Key>
 			<Value>C</Value>
 		<KV>
@@ -50,7 +45,7 @@
 		Class C
 		<KV>
 			<Key>default</Key>
-			<Value>"/Playground/now"</Value>
+			<Value>"home/kircheis/Playground/now"</Value>
 		</KV>
 	</Dispatcher>	
 </Node>
