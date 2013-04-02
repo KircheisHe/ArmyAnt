@@ -30,7 +30,7 @@ public class ParseNode {
 	protected Class<?> distributor;
 	
 	//	The next ParseNode that this node is connected.
-	protected Vector<ParseNode> next;
+	protected MapList<Integer, ParseNode> next;
 	
 	// process method
 	protected Method proMethod;
@@ -42,7 +42,7 @@ public class ParseNode {
 	public ParseNode() {
 		this.name = null;
 		this.exe = null;
-		this.next = new Vector<ParseNode>();
+		this.next = new MapList<Integer, ParseNode>();
 	}
 	
 	public ParseNode( String name ) {
@@ -88,8 +88,8 @@ public class ParseNode {
 	/*
 	 * Add a new ParseNode as one next node of the current node.
 	 */
-	public void addNext( ParseNode pn ) {
-		this.next.add(pn);
+	public void addNext( Integer integer, ParseNode pn ) {
+		this.next.addPair(integer, pn);
 		return;
 	}
 	
