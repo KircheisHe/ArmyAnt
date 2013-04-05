@@ -1,6 +1,9 @@
 <XML>
 <Input>
-	"home/kircheis/Playground/input"
+	<Name>input</Name>
+	<File>
+		"home/kircheis/Playground/input"
+	</File>
 	<Next>
 		A
 	</Next>
@@ -12,13 +15,15 @@
 		some jar name
 	</Executor>
 	<Dispatcher>
-		class A
+		<Class>class A</Class>
 		<KV>
 			<Key>1</Key>
 			<Value>B</Value>
+		</KV>
+		<KV>
 			<Key>2</Key>
 			<Value>C</Value>
-		<KV>
+		</KV>
 	</Dispatcher>	
 </Node>
 
@@ -28,7 +33,7 @@
 		some jar name
 	</Executor>
 	<Dispatcher>
-		Class B
+		<Class>Class B</Class>
 		<KV>
 			<Key>1</Key>
 			<Value>C</Value>
@@ -42,12 +47,17 @@
 		some jar name
 	</Executor>
 	<Dispatcher>
-		Class C
+		<Class>Class C</Class>
 		<KV>
 			<Key>default</Key>
-			<Value>"home/kircheis/Playground/now"</Value>
+			<Value>output</Value>
 		</KV>
 	</Dispatcher>	
 </Node>
+
+<Output>
+	<Name>output</Name>
+	<File>"home/kircheis/Playground/now"</File>
+</Output>
 
 </XML>

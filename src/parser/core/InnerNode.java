@@ -12,6 +12,21 @@ import java.lang.reflect.Method;
  */
 
 public class InnerNode extends ParseNode {
+	private MapList<String, String> next;
+	
+	public InnerNode() {
+		super();
+		this.next = new MapList<String, String>();
+	}
+	
+	public void addKV(String key, String value) {
+		this.next.addPair(key, value);
+	}
+	
+	public MapList<String, String> getKVs(){
+		return this.next;
+	}
+	
 	@Override
 	public boolean check() {
 		// use super.check() to check the executor, then to check the distributor.

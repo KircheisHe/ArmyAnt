@@ -55,6 +55,26 @@ public class ParseNode {
 		this.exe = exe;
 	}
 	
+	//	Set and Get the Name of the Node
+	public String getName() {
+		return this.name;
+	}
+	
+	public boolean setName(String name ) {
+		this.name = name;
+		return true;
+	}
+	
+	// Executor
+	public void setExe(String ss) {
+		this.exe = ss;
+		return;
+	}
+	
+	public String getExe() {
+		return this.exe;
+	}
+	
 	/*
 	 * Set the distribution class.
 	 * For the output node, the distribution class may not be applicable.
@@ -62,6 +82,10 @@ public class ParseNode {
 	public void setDis(String ss) {
 		this.dis = ss;
 		return;
+	}
+	
+	public String getDis() {
+		return this.dis;
 	}
 	
 	/*

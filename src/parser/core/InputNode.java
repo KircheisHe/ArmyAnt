@@ -14,17 +14,42 @@ public class InputNode extends ParseNode {
 	private String input;
 	private File file;
 	private ParseNode next;
+	private String nextString;
+	
+	public InputNode() {
+		this.input = null;
+		this.next = null;
+	}
 	
 	public InputNode(String inputFile) {
 		this.input = inputFile;
 		this.next = null;
 	}
 	
+	// Set file
+	public boolean setFile(String fileName) {
+		this.input = fileName;
+		return true;
+	}
+	
+	public String getFile() {
+		return this.input;
+	}
+	
+	// Three method deals with the next String
 	public boolean addNext(ParseNode pn) {
 		this.next = pn;
 		return true;
 	}
 	
+	public boolean setNextString(String ss) {
+		this.nextString = ss;
+		return true;
+	}
+	
+	public String getNextString() {
+		return this.nextString;
+	}
 	/*
 	 *	to check whether the target file is exist or not;
 	 */

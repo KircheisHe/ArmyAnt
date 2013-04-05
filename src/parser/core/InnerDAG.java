@@ -22,6 +22,7 @@ public class InnerDAG {
 	private Vector<InnerNode> inner;
 	private Vector<OutputNode> output;
 	
+	
 	public InnerDAG() {
 		this.input = new Vector<InputNode>();
 		this.inner = new Vector<InnerNode>();
