@@ -2,6 +2,7 @@ package parser.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 /*
@@ -12,6 +13,10 @@ public class MapList<Key, Value> {
 	
 	public MapList() {
 		this.maplist = new HashMap<Key, Vector<Value> >();
+	}
+	
+	public Set<Key> keySet() {
+		return this.maplist.keySet();
 	}
 	
 	/*
@@ -32,11 +37,11 @@ public class MapList<Key, Value> {
 	 * get Method is used to get all the Values that are related to the certain key.
 	 * Specifically, if there is no such value, return a empty Vector<Value>.
 	 */
-	public Vector<Value> get(Key integer) {
-		if ( !this.maplist.containsKey(integer) ) {
+	public Vector<Value> get(Key key) {
+		if ( !this.maplist.containsKey(key) ) {
 			return new Vector<Value>();
 		}
-		return this.maplist.get(integer);
+		return this.maplist.get(key);
 	}
 	
 	public static void main( String args[] ) {

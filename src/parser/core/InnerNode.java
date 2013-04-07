@@ -12,19 +12,33 @@ import java.lang.reflect.Method;
  */
 
 public class InnerNode extends ParseNode {
-	private MapList<String, String> next;
+	private MapList<String, String> nextString;
 	
 	public InnerNode() {
 		super();
-		this.next = new MapList<String, String>();
+		this.nextString = new MapList<String, String>();
+	}
+	
+	//	Print the InnerNode
+	public void print() {
+		System.out.println( "Node Name: " + this.name );
+		for ( String ss : this.next.keySet() ) {
+			System.out.println("Key: " + ss);
+			System.out.print("Value: ");
+			for ( ParseNode pn : this.next.get(ss)) {
+				System.out.print(pn.getName() + " ");
+			}
+			System.out.println();
+		}
+		System.out.println( "End Node");
 	}
 	
 	public void addKV(String key, String value) {
-		this.next.addPair(key, value);
+		this.nextString.addPair(key, value);
 	}
 	
 	public MapList<String, String> getKVs(){
-		return this.next;
+		return this.nextString;
 	}
 	
 	@Override

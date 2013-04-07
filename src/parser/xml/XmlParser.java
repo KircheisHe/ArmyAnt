@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import parser.core.InnerDAG;
 import parser.core.InnerNode;
 import parser.core.InputNode;
+import parser.core.MapList;
 import parser.core.OutputNode;
+import parser.core.ParseNode;
 
 /*
  * XmlParser reads the XML, and converts the XML into an InnerDAG.
@@ -117,11 +121,13 @@ public class XmlParser {
 				}
 				else {
 					// end of the current String, return;
+					// System.out.println(s);
 					return s;
 				}
 			}
 			else if ( ch == '>' ) {
 				// end of the current key string.
+				// System.out.println(s);
 				return s;
 			}
 			else if ( state == 1 ) {
@@ -137,6 +143,7 @@ public class XmlParser {
 	
 	/*
 	 * Main Logic of parse the XML file.
+	 * return null, if it meet some thing wrong with the next clause.
 	 */
 	public InnerDAG parse() {
 		this.fr = null;
@@ -151,6 +158,12 @@ public class XmlParser {
 		
 		//	Read the file, using getNextString() function.
 		char ch;
+		Map<String, ParseNode> tempMap = new HashMap<String, ParseNode>();
+		Vector<InputNode> inputNodes = new Vector<InputNode>();
+		Vector<InnerNode> innerNodes = new Vector<InnerNode>();
+		Vector<OutputNode> outputNodes = new Vector<OutputNode>();
+		
+		//	Parse the XML file, and build up the InnerDAG object.
 		while ( true ) {
 			String s = getNextString();
 			if ( s == null ) {
@@ -166,6 +179,11 @@ public class XmlParser {
 				InputParser inputParser = new InputParser(this);
 				InputNode in = inputParser.parse();
 				iDAG.addInput(in);
+				
+				tempMap.put(in.getName(), in);	//	add the name and the node into the map.
+				
+				// System.out.println(tempMap.get(in.getName()).getName());
+				inputNodes.add(in);
 				// System.out.println(in.getFile());
 				// System.out.println(in.getName());
 				// System.out.println(in.getNextString());
@@ -175,6 +193,10 @@ public class XmlParser {
 				InnerNode in = nodeParser.parse();
 				iDAG.addInner(in);
 				
+				// System.out.println(in.getName());
+				tempMap.put(in.getName(), in);
+				innerNodes.add(in);
+
 				/*
 				System.out.println(in.getName());
 				System.out.println(in.getExe());
@@ -195,11 +217,57 @@ public class XmlParser {
 				OutputNode on = outputParser.parse();
 				iDAG.addOutput(on);
 				
+				// System.out.println(on.getName());
+				tempMap.put(on.getName(), on);
+				outputNodes.add(on);
 				// System.out.println(on.getFile());
 				// System.out.println(on.getName());
-			}
+			}		
 			
 		}
+		
+		
+		//	Then, Build up the edge in the iDAG.
+		
+		//for ( String ss : tempMap.keySet() ) {
+		//	System.out.println(ss);
+		//}
+		
+		//	add next to the input nodes
+		for ( InputNode in : inputNodes) {
+			// System.out.println(tempMap.get(in.getNextString()).getName());
+			if ( tempMap.get(in.getNextString()) == null ) {
+				return null;
+			}
+			else {
+				in.addNext(tempMap.get(in.getNextString()));
+			}
+		}
+		
+		// 	and also to the inner nodes
+		for ( InnerNode in : innerNodes) {
+			MapList<String, String> maplist = in.getKVs();
+			for ( String ss : maplist.keySet() ) {
+				Vector<String> vs = maplist.get(ss);
+				for ( String st : vs ) {
+					// System.out.println(st);
+					if ( tempMap.get(st) == null ) {
+						return null;
+					}
+					in.addNext(ss, tempMap.get(st));
+				}
+			}
+		}
+		
+		//	After parse, print the nodes for check.
+		/*
+		for ( InputNode in : inputNodes) {
+			in.print();
+		}
+		for ( InnerNode in : innerNodes) {
+			in.print();
+		}
+		*/
 		return iDAG;
 	}
 	

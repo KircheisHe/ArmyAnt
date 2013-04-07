@@ -26,6 +26,14 @@ public class InputNode extends ParseNode {
 		this.next = null;
 	}
 	
+	//	Print the InputNode
+	public void print() {
+		System.out.println( "Node Name: " + this.name );
+		System.out.println( "File Name: " + this.input );
+		System.out.println( "Next Node Name: " + this.next.getName() );
+		System.out.println( "End Node");
+	}
+	
 	// Set file
 	public boolean setFile(String fileName) {
 		this.input = fileName;
