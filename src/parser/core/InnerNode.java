@@ -1,5 +1,6 @@
 package parser.core;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /*
@@ -17,6 +18,42 @@ public class InnerNode extends ParseNode {
 	public InnerNode() {
 		super();
 		this.nextString = new MapList<String, String>();
+	}
+	
+	public String execute( String input ) {
+		try {
+			return (String) ( this.proMethod.invoke( this.executor.newInstance(), input));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		}
+		finally {
+			System.out.println("Cannot Execute");
+			return null;
+		}
+	}
+	
+	public String distribute( String input ) {
+		try {
+			return (String) ( this.disMethod.invoke( this.distributor.newInstance(), input));
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		}
+		finally {
+			System.out.println("Cannot Distribute");
+			return null;
+		}
 	}
 	
 	//	Print the InnerNode

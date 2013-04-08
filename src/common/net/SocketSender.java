@@ -15,12 +15,12 @@ import common.writable.Writable;
  * SocketSender is used to send String
  * using Socket and Writable interface.
  */
-public class SocketSender implements Runnable {
+public class SocketSender implements Runnable, Sender {
 	private int port = 9050;
 	private SocketChannel socketChannel = null;
 	private Writable stringWritable = null;
 	private ByteBuffer buffer = null;
-	private Boolean isClose;
+	private boolean isClose;
 	
 	public SocketSender() {
 		this(9050);

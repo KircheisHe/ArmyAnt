@@ -69,6 +69,48 @@ public class StringWritable implements Writable {
 	}
 	
 	/*
+	 * write the buffer into a string.
+	 * @see common.net.Writable#write(java.nio.CharBuffer)
+	 */
+	@Override
+	public void write( CharBuffer buffer ) {
+		String s = buffer.toString();
+		while( true ) {
+			synchronized( this.listString ) {
+				if ( listString.size() < capacity ) {
+					this.listString.add(s);
+					return;
+				}
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public void write(String ss) {
+		while( true ) {
+			synchronized( this.listString ) {
+				if ( listString.size() < capacity ) {
+					this.listString.add(ss);
+					return;
+				}
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	
+	/*
 	 * return and remove the first String in the list.
 	 * return NULL if no String.
 	 */
@@ -84,9 +126,11 @@ public class StringWritable implements Writable {
 	 * @throws CharacterCodingException 
 	 */
 	public static void main(String[] args) throws CharacterCodingException {
+		
+		String s = "New String";
 		CharBuffer cb;
 		Charset charset;
-		ByteBuffer bb = ByteBuffer.wrap(("This is a bytebuffer".getBytes()));
+		ByteBuffer bb = ByteBuffer.wrap((s.getBytes()));
 		charset  =  Charset.forName( "UTF-8" );
 		CharsetDecoder decoder  =  charset.newDecoder();
 		cb =  decoder.decode(bb);
@@ -96,6 +140,8 @@ public class StringWritable implements Writable {
 		bb.put("No".getBytes());
 		bb.flip();
 		cb =  decoder.decode(bb);
-		System.out.println(cb.toString());	
+		System.out.println(cb.toString());
 	}
+
+	
 }

@@ -1,6 +1,8 @@
 package parser.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 /*
  * A input node,
@@ -13,6 +15,7 @@ import java.io.File;
 public class InputNode extends ParseNode {
 	private String input;
 	private File file;
+	private FileReader fileReader;
 	private ParseNode next;
 	private String nextString;
 	
@@ -50,6 +53,10 @@ public class InputNode extends ParseNode {
 		return true;
 	}
 	
+	public ParseNode getSingleNext() {
+		return this.next;
+	}
+	
 	public boolean setNextString(String ss) {
 		this.nextString = ss;
 		return true;
@@ -63,12 +70,19 @@ public class InputNode extends ParseNode {
 	 */
 	@Override
 	public boolean check() {
-		this.file = new File(input);
-		if( !this.file.exists() ) {
+		if ( this.next == null ) {
 			return false;
 		}
-		if ( this.next == null ) return false;
+		try {
+			this.fileReader = new FileReader(this.file);
+		} catch (FileNotFoundException e) {
+			return false;
+		}
 		return true;
+	}
+	
+	public FileReader getFileReader() {
+		return this.fileReader;
 	}
 	
 	/**

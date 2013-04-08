@@ -1,6 +1,7 @@
 package common.writable;
 
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 
 /*
  * Writable is the interface to use over the socket.
@@ -16,6 +17,9 @@ public interface Writable {
 	 */
 	public void write( ByteBuffer buffer);
 	
+	public void write( CharBuffer buffer);
+	
+	public void write( String ss);
 	/*
 	 * read is convert the inner string out.
 	 */

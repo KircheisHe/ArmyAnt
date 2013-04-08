@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -268,7 +270,59 @@ public class XmlParser {
 			in.print();
 		}
 		*/
+		
+		/*
+		 * After parse the ParseNode,
+		 * we need to give every node a socket port for it to receive information.
+		 * InputNode doesn't need these port.
+		 * InnerNode and OutputNode need such port for each of them.
+		 */
+		int currentPort = 10100;
+		for ( InnerNode in : innerNodes ) {
+			// 	First, test the current is port.
+			//	If the port is in use, port++;
+			while ( isUsed(currentPort) ) {
+				currentPort++;
+			}
+			//	Now, the current port is now not in use, assign it to the inner node.
+			in.setSocketPort(currentPort);
+			currentPort++;
+		}
+		for ( OutputNode on : outputNodes ) {
+			while ( isUsed(currentPort) ) {
+				currentPort++;
+			}
+			on.setSocketPort(currentPort);
+			currentPort++;
+		}
+		
+		
+		//	After assigning socket number to every node, the parse part can be done.
+		//	Return the iDAG as a whole.
 		return iDAG;
+	}
+	
+	/*
+	 * Test a certain port is used or not.
+	 * Try to new a class of ServerSocket and to see whether it will throw an exception.
+	 * If an exception is thrown, then the port is in use, we need to move on.
+	 * After all, we need to close the server.
+	 */
+	private boolean isUsed( int port ) {
+		ServerSocket server = null;
+		Socket socket = null;
+		try {
+			server = new ServerSocket(port);
+		}
+		catch( Exception e ) {
+			return true;
+		}
+		try {
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	/**
@@ -277,6 +331,15 @@ public class XmlParser {
 	public static void main(String[] args) {
 		XmlParser xp = new XmlParser();
 		xp.parse();
+		
+		/*
+		if ( !xp.isUsed(10100) ) {
+			System.out.println("10100 is not used, first");
+		}
+		if ( !xp.isUsed(10100)) {
+			System.out.println("10100 is not used, second");
+		}
+		*/
 	}
 
 }

@@ -38,6 +38,8 @@ public class ParseNode {
 	// distribute method
 	protected Method disMethod;
 	
+	private int socketPort;
+	
 	// Constructor of a ParseNode.
 	public ParseNode() {
 		this.name = null;
@@ -53,6 +55,15 @@ public class ParseNode {
 	public ParseNode( String name, String exe ) {
 		this(name);
 		this.exe = exe;
+	}
+	
+	//	Port
+	public void setSocketPort( int port ) {
+		this.socketPort = port;
+	}
+	
+	public int getSocketPort() {
+		return this.socketPort;
 	}
 	
 	//	Set and Get the Name of the Node
@@ -115,6 +126,10 @@ public class ParseNode {
 	public void addNext( String string, ParseNode pn ) {
 		this.next.addPair(string, pn);
 		return;
+	}
+	
+	public MapList<String, ParseNode> getNext() {
+		return this.next;
 	}
 	
 	public static void main(String[] args) {

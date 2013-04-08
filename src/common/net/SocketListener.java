@@ -28,14 +28,15 @@ import common.writable.Writable;
  * While listener may listen to a certain port, sender can send information to multi-port. 
  */
 
-public class SocketListener implements Runnable{
+public class SocketListener implements Runnable, Listener{
 	int port = 9050;	//	the port to listen, the default port is 9050
 	private ServerSocketChannel ssc = null;
 	private ServerSocket ss = null;
 	private ByteBuffer buffer = null;
 	private Selector selector = null;
 	private Writable stringwritable = null;
-	private Boolean isClose;
+	private boolean isClose;
+	private boolean isEnd;
 	
 	public SocketListener() {
 		this(9050);
@@ -44,8 +45,9 @@ public class SocketListener implements Runnable{
 	public SocketListener( int port ) {
 		this.port = port;
 		this.isClose = false;
-		this.buffer = ByteBuffer.allocate(50);
+		this.buffer = ByteBuffer.allocate(1024);
 		this.stringwritable = new StringWritable();
+		this.isEnd = false;
 		try {
 			this.selector = Selector.open();
 			this.ssc = ServerSocketChannel.open();
@@ -74,8 +76,14 @@ public class SocketListener implements Runnable{
 	/*
 	 * used to get the writable interface.
 	 */
-	public Writable getWritalbe() {
+	@Override
+	public Writable getWritable() {
 		return this.stringwritable;
+	}
+	
+	@Override
+	public boolean isEnd() {
+		return this.isEnd;
 	}
 	
 	/*
@@ -151,7 +159,7 @@ public class SocketListener implements Runnable{
 		SocketListener sl = new SocketListener();
 		Thread t = new Thread(sl);
 		t.start();
-		Writable sw = sl.getWritalbe();
+		Writable sw = sl.getWritable();
 		while ( true ) {
 			try {
 				Thread.sleep(1000);
@@ -164,4 +172,6 @@ public class SocketListener implements Runnable{
 			}
 		}
 	}
+
+	
 }
