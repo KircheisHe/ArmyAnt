@@ -30,24 +30,28 @@ public class FileSender implements Runnable, Sender {
 	
 	@Override
 	public void run() {
+		// System.out.println("File Sender");
 		int count = 0;
 		while ( true && !isClose ) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			String s = this.writable.read();
+			// System.out.println(s);
 			if ( s != null ) {
 				try {
 					this.fileWriter.write(s);
 					this.fileWriter.write("\n");
 					count++;
-					if ( count > 100 ) {
+					if ( true ) {
 						this.fileWriter.flush();
 						count = 0;
 					}
 				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
@@ -89,5 +93,4 @@ public class FileSender implements Runnable, Sender {
 		}
 		fs.close();
 	}
-
 }

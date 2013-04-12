@@ -34,6 +34,13 @@ public class XmlParser {
 	}
 	
 	/*
+	 * To do, to check whether the target XML is valid or not.
+	 */
+	public boolean check() {
+		return true;
+	}
+	
+	/*
 	 * Get the Key String between '<' and '>'
 	 */
 	public String getKeyString() {

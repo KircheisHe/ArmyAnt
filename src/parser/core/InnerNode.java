@@ -32,10 +32,7 @@ public class InnerNode extends ParseNode {
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
-		finally {
-			System.out.println("Cannot Execute");
-			return null;
-		}
+		return null;
 	}
 	
 	public String distribute( String input ) {
@@ -50,10 +47,7 @@ public class InnerNode extends ParseNode {
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
-		finally {
-			System.out.println("Cannot Distribute");
-			return null;
-		}
+		return null;
 	}
 	
 	//	Print the InnerNode
@@ -85,13 +79,16 @@ public class InnerNode extends ParseNode {
 			try {
 				this.distributor = Class.forName(this.dis);
 			} catch (ClassNotFoundException e) {
+				System.out.println("InnerNode " + this.name + " : " + " Distributor " + this.dis + " cannot be found.");
 				return false;
 			}
 			try {
 				this.disMethod = this.distributor.getMethod("distribute", String.class);
 			} catch (SecurityException e) {
+				System.out.println("InnerNode " + this.name + " : " + " Distributor " + this.dis + "'s ditribute method cannot be reached due to security problems.");
 				return false;
 			} catch (NoSuchMethodException e) {
+				System.out.println("InnerNode " + this.name + " : " + " Distributor " + this.dis + "'s ditribute method cannot be found.");
 				return false;
 			}
 			if ( checkNext() ) {

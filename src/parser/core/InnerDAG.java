@@ -64,12 +64,42 @@ public class InnerDAG {
 	
 	/*
 	 * use ParseNode's check to check every node.
-	 * And their relationship.
 	 * 
-	 * to Do.
+	 * by check(), InnerDAG calls the ParseNode's check() method.
+	 * 
 	 */
 	public boolean check() {
+		for (InputNode in : this.input) {
+			if (!in.check()) {
+				// System.out.println("Input Node " + in.getName() + " is not valid");
+				return false;
+			}
+		}
+		for (InnerNode in : this.inner) {
+			if (!in.check()) {
+				// System.out.println("Inner Node " + in.getName() + " is not valid");
+				return false;
+			}
+		}
+		for (OutputNode on : this.output) {
+			if (!on.check()) {
+				System.out.println("Output Node " + on.getName() + " is not valid");
+				return false;
+			}
+		}
 		return true;
+	}
+	
+	public Vector<InputNode> getInput() {
+		return this.input;
+	}
+	
+	public Vector<InnerNode> getInner() {
+		return this.inner;
+	}
+	
+	public Vector<OutputNode> getOutput() {
+		return this.output;
 	}
 	
 	/**

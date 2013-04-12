@@ -108,13 +108,16 @@ public class ParseNode {
 		try {
 			this.executor = Class.forName(this.exe);
 		} catch (ClassNotFoundException e) {
+			System.out.println("InnerNode " + this.name + " : " + " Executor " + this.exe + " cannot be found.");
 			return false;
 		}
 		try {
 			this.proMethod = this.executor.getMethod("processor", String.class);
 		} catch (SecurityException e) {
+			System.out.println("InnerNode " + this.name + " : " + " Executor " + this.exe + "'s processor method cannot be reached due to security problems.");
 			return false;
 		} catch (NoSuchMethodException e) {
+			System.out.println("InnerNode " + this.name + " : " + " Executor " + this.exe + "'s processor method cannot be found.");
 			return false;
 		}
 		return true;

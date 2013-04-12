@@ -33,7 +33,7 @@ public class SocketSender implements Runnable, Sender {
 			this.stringWritable = new StringWritable();
 			this.socketChannel = SocketChannel.open(new InetSocketAddress("localhost", port));
 			this.socketChannel.configureBlocking(false);
-			this.buffer = ByteBuffer.allocate(50);
+			this.buffer = ByteBuffer.allocate(1024);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -63,6 +63,7 @@ public class SocketSender implements Runnable, Sender {
 	
 	@Override
 	public void run() {
+		// System.out.println("Socket Sender");
 		while ( true && !isClose) {
 			try {
 				Thread.sleep(100);

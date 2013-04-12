@@ -20,8 +20,8 @@ import common.writable.Writable;
  */
 public class RuntimeInnerNode implements Runnable {
 	private InnerNode innerNode;
-	private Listener listener;
-	private MapList<String, Sender> mapSender;
+	private SocketListener listener;
+	private MapList<String, SocketSender> mapSender;
 	private MapList<String, Writable> mapWritable;
 	private Method executor;
 	private Method distributor;
@@ -30,18 +30,10 @@ public class RuntimeInnerNode implements Runnable {
 		this.innerNode = in;
 		
 		this.listener = new SocketListener( in.getSocketPort());
-		this.mapSender = new MapList<String,Sender>();
-		this.mapWritable = new MapList<String, Writable>();
-		MapList<String, ParseNode> msp = in.getNext();
-		SocketSender socketSender;
-		for ( String ss : msp.keySet() ) {
-			Vector<ParseNode> vpn = msp.get(ss);
-			for ( ParseNode pn : vpn ) {
-				socketSender = new SocketSender(pn.getSocketPort());
-				mapSender.addPair(ss, socketSender);
-				mapWritable.addPair(ss, socketSender.getWritable());
-			}
-		}
+		Thread t1 = new Thread(this.listener);
+		t1.start();
+		this.mapSender = new MapList<String,SocketSender>();
+		
 	}
 	
 	
@@ -50,17 +42,42 @@ public class RuntimeInnerNode implements Runnable {
 	//	And input node doesn't do any execution.
 	@Override
 	public void run() {
+		this.mapWritable = new MapList<String, Writable>();
+		MapList<String, ParseNode> msp = this.innerNode.getNext();
+		SocketSender socketSender;
+		for ( String ss : msp.keySet() ) {
+			Vector<ParseNode> vpn = msp.get(ss);
+			for ( ParseNode pn : vpn ) {
+				socketSender = new SocketSender(pn.getSocketPort());
+				Thread t2 = new Thread(socketSender);
+				t2.start();
+				mapSender.addPair(ss, socketSender);
+				mapWritable.addPair(ss, socketSender.getWritable());
+			}
+		}
 		Writable lw = this.listener.getWritable();
 		String sr, sd;
 		Vector<Writable> vw;
 		while ( !this.listener.isEnd() ) {
 			sr = lw.read();
-			sr = this.innerNode.execute(sr);
-			sd = this.innerNode.distribute(sr);
-			vw = this.mapWritable.get(sd);
-			if ( vw != null ) {
-				for ( Writable writable : vw ) {
-					writable.write( sr );
+			if ( sr != null ) {
+				sr = this.innerNode.execute(sr);
+				// System.out.println(sr);
+				sd = this.innerNode.distribute(sr);
+				// System.out.println(sd);
+				vw = this.mapWritable.get(sd);
+				if ( vw != null ) {
+					for ( Writable writable : vw ) {
+						writable.write( sr );
+						// System.out.println(sr);
+					}
+				}
+			}
+			else {
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}

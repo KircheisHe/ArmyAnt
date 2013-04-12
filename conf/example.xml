@@ -2,7 +2,7 @@
 <Input>
 	<Name>input</Name>
 	<File>
-		"home/kircheis/Playground/input"
+		"/home/kircheis/Playground/github/ArmyAnt/example/first/input"
 	</File>
 	<Next>
 		A
@@ -12,10 +12,10 @@
 <Node>
 	<Name>A</Name>
 	<Executor>
-		some jar name
+		example.first.FirstStep
 	</Executor>
 	<Dispatcher>
-		<Class>class A</Class>
+		<Class>example.first.FirstDistributor</Class>
 		<KV>
 			<Key>1</Key>
 			<Value>B</Value>
@@ -30,13 +30,13 @@
 <Node>
 	<Name>B</Name>
 	<Executor>
-		some jar name
+		example.first.SecondStepOne
 	</Executor>
 	<Dispatcher>
-		<Class>Class B</Class>
+		<Class>example.first.SecondDistributorOne</Class>
 		<KV>
 			<Key>1</Key>
-			<Value>C</Value>
+			<Value>output</Value>
 		</KV>
 	</Dispatcher>	
 </Node>
@@ -44,20 +44,25 @@
 <Node>
 	<Name>C</Name>
 	<Executor>
-		some jar name
+		example.first.SecondStepTwo
 	</Executor>
 	<Dispatcher>
-		<Class>Class C</Class>
+		<Class>example.first.SecondDistributorOne</Class>
 		<KV>
-			<Key>default</Key>
-			<Value>output</Value>
+			<Key>1</Key>
+			<Value>output2</Value>
 		</KV>
 	</Dispatcher>	
 </Node>
 
 <Output>
 	<Name>output</Name>
-	<File>"home/kircheis/Playground/now"</File>
+	<File>"/home/kircheis/Playground/github/ArmyAnt/example/first/output"</File>
+</Output>
+
+<Output>
+	<Name>output2</Name>
+	<File>"/home/kircheis/Playground/github/ArmyAnt/example/first/output2"</File>
 </Output>
 
 </XML>

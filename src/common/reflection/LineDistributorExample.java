@@ -8,8 +8,8 @@ import java.util.Map;
  */
 public class LineDistributorExample implements LineDistributor {
 	@Override
-	public Integer distribute(String s) {
-		return 1;
+	public String distribute(String s) {
+		return "1";
 	}
 
 }

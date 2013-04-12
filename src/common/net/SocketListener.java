@@ -98,6 +98,7 @@ public class SocketListener implements Runnable, Listener{
 	 */
 	@Override
 	public void run() {
+		// System.out.println("Socket Listener");
 		while ( true && !isClose) {	
 			//	Sleep some time before actually doing something.
 			//	in a loop.

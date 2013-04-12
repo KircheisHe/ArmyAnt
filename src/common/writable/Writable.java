@@ -24,4 +24,6 @@ public interface Writable {
 	 * read is convert the inner string out.
 	 */
 	public String read();
+	
+	public boolean hasMore();
 }

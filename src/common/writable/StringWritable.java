@@ -68,6 +68,15 @@ public class StringWritable implements Writable {
 		}
 	}
 	
+	public boolean hasMore() {
+		if ( this.listString.isEmpty() ) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
 	/*
 	 * write the buffer into a string.
 	 * @see common.net.Writable#write(java.nio.CharBuffer)

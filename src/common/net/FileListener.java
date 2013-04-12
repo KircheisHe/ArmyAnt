@@ -1,5 +1,6 @@
 package common.net;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,6 +18,7 @@ public class FileListener implements Runnable, Listener {
 	private String fileName;
 	private File file;
 	private FileReader fileReader;
+	private BufferedReader br;
 	private Writable writable = null;
 	private CharBuffer buffer;
 	private boolean isClose;
@@ -30,6 +32,7 @@ public class FileListener implements Runnable, Listener {
 		this.writable = new StringWritable();
 		try {
 			this.fileReader = new FileReader( new File(name) );
+			this.br = new BufferedReader(this.fileReader);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -49,19 +52,21 @@ public class FileListener implements Runnable, Listener {
 	
 	@Override
 	public void run() {
+		// System.out.println("File Listener");
 		int len = 1;
+		String s = null;
 		while ( true && !isClose ) {
 			try {
-				len = fileReader.read(this.buffer);
+				s = br.readLine();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if ( len > 0 ) {
-				this.buffer.flip();
-				this.writable.write(this.buffer);
-				this.buffer.clear();
+			if ( s != null ) {
+				System.out.println(s);
+				this.writable.write(s);
 			}
-			else if ( len == - 1){
+			else {
 				this.isEnd = true;
 				break;
 			}

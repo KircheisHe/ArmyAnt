@@ -22,24 +22,41 @@ import parser.core.ParseNode;
  */
 public class RuntimeInputNode implements Runnable{
 	private InputNode inputNode;
-	private Listener listener;
-	private Sender sender;
+	private FileListener listener;
+	private SocketSender sender;
 	
 	public RuntimeInputNode( InputNode in ) {
 		this.inputNode = in;
 		this.listener = new FileListener( in.getFile() );
-		this.sender = new SocketSender( in.getSingleNext().getSocketPort() );
-	}
+		// System.out.println(in.getSingleNext().getSocketPort());
+		}
 	
 	// 	It is easy, to do with the input node,
 	//	Since the only output of the input node is to another socket port.
 	//	And input node doesn't do any execution.
 	@Override
 	public void run() {
+		// System.out.println("InputNode: " + this.inputNode.getName() + " File: " + this.inputNode.getFile());
+		this.sender = new SocketSender( this.inputNode.getSingleNext().getSocketPort() );
+		Thread t1 = new Thread(this.listener);
+		t1.start();
+		Thread t2 = new Thread(this.sender);
+		t2.start();
 		Writable fw = this.listener.getWritable();
 		Writable sw = this.sender.getWritable();
-		while ( !this.listener.isEnd() ) {
-			sw.write( fw.read() );
+		while ( !this.listener.isEnd() || fw.hasMore() ) {
+			String s = fw.read();
+			if ( s != null) {
+				// System.out.println(s);
+				sw.write( s );
+			}
+			else {
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	

@@ -74,8 +74,9 @@ public class InputNode extends ParseNode {
 			return false;
 		}
 		try {
-			this.fileReader = new FileReader(this.file);
+			this.fileReader = new FileReader(this.input);
 		} catch (FileNotFoundException e) {
+			System.out.println("InputNode " + this.name + " :" + " File " + this.input + " cannot be found");
 			return false;
 		}
 		return true;

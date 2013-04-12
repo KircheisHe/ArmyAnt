@@ -10,8 +10,8 @@ import parser.core.OutputNode;
 
 public class RuntimeOutputNode implements Runnable {
 	private OutputNode outputNode;
-	private Listener listener;
-	private Sender sender;
+	private SocketListener listener;
+	private FileSender sender;
 	
 	public RuntimeOutputNode( OutputNode on) {
 		this.outputNode = on;
@@ -21,6 +21,10 @@ public class RuntimeOutputNode implements Runnable {
 	
 	@Override
 	public void run() {
+		Thread t1 = new Thread(this.listener);
+		t1.start();
+		Thread t2 = new Thread(this.sender);
+		t2.start();
 		Writable fw = this.listener.getWritable();
 		Writable sw = this.sender.getWritable();
 		while ( !this.listener.isEnd() ) {
@@ -32,8 +36,6 @@ public class RuntimeOutputNode implements Runnable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
